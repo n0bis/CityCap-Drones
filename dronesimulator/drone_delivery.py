@@ -113,11 +113,11 @@ http://localhost:8080/
 
     def change_mode(self, mode):
         self._log("Changing to mode: {0}".format(mode))
-
-        self.vehicle.mode = VehicleMode(mode)
-        #while self.vehicle.mode != mode:
+        
+        #while self.vehicle.mode != VehicleMode(mode):
         #    self._log('  ... polled mode: {0}'.format(mode))
-        #    time.sleep(1)
+        self.vehicle.mode = VehicleMode(mode)
+        #    time.sleep(0.5)
 
     def goto(self, location, relative=None):
         self._log("Goto: {0}, {1}".format(location, self.altitude))
@@ -163,7 +163,7 @@ class Templates:
                 'zoom': 13,
                 'format': 'png',
                 'access_token': 'pk.eyJ1IjoiaGVsdGgiLCJhIjoiY2xhaTJ6YW94MGI1OTNvbnc3bjBiOWpvMSJ9.wE7SR58BD5Ag59nFz0fffA',
-                'mapid': 'kevin3dr.n56ffjoo',
+                'mapid': 'mapbox.mapbox-streets-v8',
                 'home_coords': self.home_coords,
                 'menu': [{'name': 'Home', 'location': '/'},
                          {'name': 'Track', 'location': '/track'},

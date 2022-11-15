@@ -47,12 +47,11 @@
 				};
 				var mapboxStatic = function(current_coords, options){
 					var markers = markerString(current_coords);
-					var imageUrl  = 'http://api.tiles.mapbox.com/v4/' +
-						options.mapid + '/' +
+					var imageUrl  = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/static/' +
 						markers + '/' +
 						current_coords.join(',') + ',' +
 						options.zoom + '/' +
-						options.width + 'x' + options.height + '.png' +
+						options.width + 'x' + options.height +
 						'?access_token=' + options.access_token;
 					return imageUrl;
 				};

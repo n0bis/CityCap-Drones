@@ -1,9 +1,9 @@
 {% macro static_map(options, coords) -%}
-	<img src="http://api.tiles.mapbox.com/v4/{{ options.mapid }}/{{ coords[1] }},{{ coords[0] }},{{ options.zoom }}/{{ options.width }}x{{ options.height }}.{{ options.format }}?access_token={{ options.access_token }}" />
+	<img src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/{{ coords[1] }},{{ coords[0] }},{{ options.zoom }}/{{ options.width }}x{{ options.height }}?access_token={{ options.access_token }}" />
 {%- endmacro %}
 
 {% macro static_map_with_marker(options, coords, marker_coords) -%}
-	<img src="http://api.tiles.mapbox.com/v4/{{ options.mapid }}/{{ marker_string(marker_coords) }}/{{ coords[1] }},{{ coords[0] }},{{ options.zoom }}/{{ options.width }}x{{ options.height }}.{{ options.format }}?access_token={{ options.access_token }}" />
+	<img src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/{{ marker_string(marker_coords) }}/{{ coords[1] }},{{ coords[0] }},{{ options.zoom }}/{{ options.width }}x{{ options.height }}?access_token={{ options.access_token }}" />
 {%- endmacro %}
 
 {% macro marker_string(coords, label='heliport', color='f86767') -%}
