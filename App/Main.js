@@ -53,10 +53,8 @@ function calcRoute() {
             //displayInfo(document.getElementById("from").value, document.getElementById("to").value, result.routes[0].legs[0].distance.text)
             //display route
             directionsDisplay.setDirections(result);
-            console.log(result);
             let start = result.routes[0].legs[0].start_location
             let end = result.routes[0].legs[0].end_location
-            console.log(start, end)
             //moveTo(result.routes[0].overview_path);
             moveDrone(start, end);
             /*result.routes[0].overview_path.map(async element => {
