@@ -109,7 +109,7 @@ function displayInfo(distance, duration) {
 
 //create autocomplete objects for all inputs
 var options = {
-    types: ['(cities)']
+    types: ['hospital']
 }
 
 var input1 = document.getElementById("from");
