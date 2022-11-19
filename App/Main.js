@@ -42,7 +42,6 @@ function calcRoute() {
         travelMode: google.maps.TravelMode.DRIVING, //WALKING, BYCYCLING, TRANSIT
         unitSystem: google.maps.UnitSystem.METRIC
     }
-    console.log(document.getElementById("from").value)
     //pass the request to the route method
     directionsService.route(request, function (result, status) {
         if (status == google.maps.DirectionsStatus.OK) {
