@@ -20,17 +20,6 @@ var directionsDisplay = new google.maps.DirectionsRenderer();
 //bind the DirectionsRenderer to the map
 directionsDisplay.setMap(map);
 
-var marker = new google.maps.Marker( {icon: {
-    url: './Content/drone.svg',
-    // This marker is 20 pixels wide by 32 pixels high.
-    size: new google.maps.Size(48, 48),
-    // The origin for this image is (0, 0).
-    origin: new google.maps.Point(0, 0),
-    // The anchor for this image is the base of the flagpole at (0, 32).
-    anchor: new google.maps.Point(24, 24)
-}, position: myLatLng, map: map} );
-marker.setMap( map );
-
 const sleep = ms => new Promise(res => setTimeout(res, ms))
 
 //define calcRoute function
@@ -51,11 +40,12 @@ function calcRoute() {
             output.innerHTML = "<div class='alert-info'>From: " + document.getElementById("from").value + ".<br />To: " + document.getElementById("to").value + ".<br /> Distance <i class='fas fa-road'></i> : " + result.routes[0].legs[0].distance.text + ".<br />Duration <i class='fas fa-hourglass-start'></i> : " + result.routes[0].legs[0].duration.text + ".</div>";
             //displayInfo(document.getElementById("from").value, document.getElementById("to").value, result.routes[0].legs[0].distance.text)
             //display route
-            directionsDisplay.setDirections(result);
+            //directionsDisplay.setDirections(result);
             let start = result.routes[0].legs[0].start_location
             let end = result.routes[0].legs[0].end_location
             //moveTo(result.routes[0].overview_path);
             moveDrone(start, end);
+            //setWay(start, end);
             /*result.routes[0].overview_path.map(async element => {
                 marker.setPosition( new google.maps.LatLng( element.lat(), element.lng() ) );
                 await sleep(3000);
@@ -81,6 +71,16 @@ async function moveTo(elements) {
 }
 
 async function moveDrone(start, end) {
+    let marker = new google.maps.Marker( {icon: {
+        url: './Content/drone.svg',
+        // This marker is 20 pixels wide by 32 pixels high.
+        size: new google.maps.Size(48, 48),
+        // The origin for this image is (0, 0).
+        origin: new google.maps.Point(0, 0),
+        // The anchor for this image is the base of the flagpole at (0, 32).
+        anchor: new google.maps.Point(24, 24)
+    }, position: { lat: start.lat(), lng: start.lng()}, map: map} );
+    marker.setMap( map );
     let drone_velocity = 70;
     let startLocation = new Point(start.lat(), start.lng())
     let endLocation = new Point(end.lat(), end.lng())
@@ -97,6 +97,33 @@ async function moveDrone(start, end) {
         let remaining = distanceInKm / drone_velocity;
         displayInfo(distanceInKm, Math.round(remaining * 60));
         await sleep(2000);
+    }
+}
+
+async function setWay(start, end) {
+    let drone_velocity = 70;
+    let startLocation = new Point(start.lat(), start.lng())
+    let endLocation = new Point(end.lat(), end.lng())
+    let distanceBetweenPoints = CalculateDistanceBetweenLocations(startLocation, endLocation) * 1000;
+    let timeRequired = distanceBetweenPoints / drone_velocity;
+    for (var i = 0; i < timeRequired; i++) {
+        let bearing = CalculateBearing(startLocation, endLocation);
+        let distanceInKm = drone_velocity / 1000;
+        let intermediaryLocation = CalculateDestinationLocation(startLocation, bearing, distanceInKm);
+        new google.maps.Marker({
+            position: {lat: intermediaryLocation.latitude, lng: intermediaryLocation.longitude},
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillColor: '#00F',
+                fillOpacity: 0.6,
+                strokeColor: '#00A',
+                strokeOpacity: 0.9,
+                strokeWeight: 1,
+                scale: 1
+            },
+            map: map,
+          });
+        startLocation = intermediaryLocation;
     }
 }
 
